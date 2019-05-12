@@ -2,9 +2,6 @@ cmake_minimum_required(VERSION 3.14)
 
 project(texture-atlas CXX)
 
-file(GLOB SOURCES "src/*.cpp")
-file(GLOB TEST_SOURCES "test/*.cpp")
-
 # Set warning level
 if (MSVC)
     add_compile_options(/Wa)
@@ -16,16 +13,29 @@ endif()
 add_subdirectory(dlib dlib_build)
 add_subdirectory(Catch2)
 
-# Main application
-add_executable(${PROJECT_NAME} ${SOURCE} main.cpp)
-target_include_directories(${PROJECT_NAME} PRIVATE include)
+# Build the library
+add_library(${PROJECT_NAME} src/png_image.cpp
+                            src/point.cpp
+                            src/rect.cpp
+                            src/texture.cpp
+)
+target_include_directories(${PROJECT_NAME} PUBLIC include)
 target_link_libraries(${PROJECT_NAME} dlib::dlib)
 target_link_libraries(${PROJECT_NAME} stdc++fs)
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 
-# Tests
-set(TEST_EXEC "tests")
-add_executable(${TEST_EXEC} ${TEST_SOURCES} ${SOURCES})
-target_include_directories(${TEST_EXEC} PRIVATE include)
-target_link_libraries(${TEST_EXEC} Catch2::Catch2)
+# Binary
+add_executable(texture-atlas-bin main.cpp)
+target_link_libraries(texture-atlas-bin ${PROJECT_NAME})
+target_compile_features(texture-atlas-bin PRIVATE cxx_std_17)
+
+# Test binary
+add_executable(texture-atlas-tests test/test_main.cpp
+                            test/test_point.cpp
+                            test/test_rect.cpp
+                            test/test_png_image.cpp
+                            test/test_texture.cpp
+)
+target_link_libraries(texture-atlas-tests Catch2::Catch2)
+target_link_libraries(texture-atlas-tests ${PROJECT_NAME})
+target_compile_features(texture-atlas-tests PRIVATE cxx_std_17)

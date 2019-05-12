@@ -1,4 +1,5 @@
 #include "catch2/catch.hpp"
+
 #include "point.h"
 
 TEST_CASE("point can be created, added, subtracted, and compared", "[point]") {

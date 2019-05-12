@@ -4,7 +4,7 @@
 
 #include "point.h"
 
-Point::Point(Coord x, Coord y):
+Point::Point(long x, long y):
     x{x}, y{y} {
 
 }
@@ -24,19 +24,19 @@ Point& Point::operator=(const Point& other) {
     return *this;
 }
 
-Point::Coord Point::X() const {
+long Point::X() const {
     return x;
 }
 
-void Point::X(Coord x) {
+void Point::X(long x) {
     this->x = x;
 }
 
-Point::Coord Point::Y() const {
+long Point::Y() const {
     return y;
 }
 
-void Point::Y(Coord y) {
+void Point::Y(long y) {
     this->y = y;
 }
 

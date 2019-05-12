@@ -9,16 +9,14 @@
 
 class Point {
 public:
-    using Coord = int;
-
-    Point(Coord x = 0, Coord y = 0);
+    Point(long x = 0, long y = 0);
     Point(const Point&);
     Point& operator=(const Point&);
 
-    Coord X() const;
-    void X(Coord);
-    Coord Y() const;
-    void Y(Coord);
+    long X() const;
+    void X(long);
+    long Y() const;
+    void Y(long);
 
     Point& operator+=(const Point&);
     Point& operator-=(const Point&);
@@ -28,8 +26,8 @@ public:
     friend bool operator!=(const Point&, const Point&);
     friend std::ostream& operator<<(std::ostream&, const Point&);
 private:
-    Coord x;
-    Coord y;
+    long x;
+    long y;
 };
 
 #endif /* define __POINT_H__ */
