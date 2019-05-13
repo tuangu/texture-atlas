@@ -135,6 +135,15 @@ void Texture::setParent(std::shared_ptr<Image> parent) {
     this->parent = parent;
 }
 
+void Texture::report(Report& reporter) {
+    if (textures.empty())
+        return;
+
+    for (auto& texture : textures) {
+        texture->report(reporter);
+    }
+}
+
 void Texture::print_info(int level) {
     for (auto& texture : textures) {
         auto pTexture = dynamic_cast<Texture*>(texture.get());

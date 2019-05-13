@@ -62,3 +62,7 @@ bool JpegImage::addChild(std::shared_ptr<Image> child) {
 void JpegImage::setParent(std::shared_ptr<Image> parent) {
     this->parent = parent;
 }
+
+void JpegImage::report(Report& reporter) {
+    reporter.visitImage(this);
+}

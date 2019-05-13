@@ -9,6 +9,7 @@
 #include <dlib/image_io.h>
 
 #include "file_loader.h"
+#include "report.h"
 #include "png_image.h"
 #include "texture.h"
 
@@ -18,6 +19,7 @@ int main(int argc, char* argv[]) try {
     }
     
     FileLoader imageDir(argv[1]);
+    Report reporter;
     Point origin;
     std::vector<std::string> paths;
 
@@ -53,13 +55,15 @@ int main(int argc, char* argv[]) try {
     }
     
     exactDim += distance;
-    std::cout << "Exact dim = " << exactDim << std::endl;
     Texture texture{origin, exactDim, exactDim};
     for (const auto& path : paths) {
         texture.addChild(std::make_shared<PngImage>(path, origin));
     }
 
-    //texture.print_info(0);
+    
+    texture.report(reporter);
+    reporter.toFile("meta.txt");
+
     texture.save("final.png");
 
     // dlib::array2d<dlib::rgb_alpha_pixel> arr;

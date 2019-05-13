@@ -42,8 +42,6 @@ void PngImage::save(image_type& texture) {
         throw std::out_of_range("error: out of range");
     }
 
-    std::cout << path << std::endl;
-
     for (long row = 0; row < rawImage.nr(); row++) {
         for (long col = 0; col < rawImage.nc(); col++) {
             texture[row + startRow][col + startCol] = rawImage[row][col];
@@ -63,4 +61,8 @@ bool PngImage::addChild(std::shared_ptr<Image> child) {
 
 void PngImage::setParent(std::shared_ptr<Image> parent) {
     this->parent = parent;
+}
+
+void PngImage::report(Report& reporter) {
+    reporter.visitImage(this);
 }

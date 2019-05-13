@@ -11,6 +11,9 @@
 #include <dlib/pixel.h>
 #include "rect.h"
 #include "point.h"
+#include "report.h"
+
+class Report;
 
 class Image {
 public:
@@ -31,6 +34,8 @@ public:
     virtual bool addChild(std::shared_ptr<Image>) = 0;
 
     virtual void setParent(std::shared_ptr<Image>) = 0;
+
+    virtual void report(Report&) = 0;
 
 protected:
     Image(const std::string& path = "") : path{path} {};

@@ -24,6 +24,8 @@ public:
 
     void setParent(std::shared_ptr<Image> parent) override;
 
+    void report(Report& reporter) override;
+
     void print_info(int level);
 
 private:

@@ -23,6 +23,8 @@ public:
 
     void setParent(std::shared_ptr<Image> parent) override;
 
+    void report(Report& reporter) override;
+
 private:
     point_type origin;
     long width;
