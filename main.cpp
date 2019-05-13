@@ -3,53 +3,58 @@
 #include <string>
 #include <iostream>
 #include <iterator>
+#include <filesystem>
 #include <algorithm>
 
 #include <dlib/gui_widgets.h>
 #include <dlib/image_io.h>
 #include "png_image.h"
+#include "texture.h"
+#include "file_loader.h"
+
+namespace fs = std::filesystem;
 
 int main(int argc, char* argv[]) try {
-    if (argc != 2) 
-        throw std::invalid_argument("error: missing image paths");
+    // if (argc < 2) 
+    //     throw std::invalid_argument("error: missing image paths");
 
-    // std::string img_path_1{argv[1]};
-    // std::string img_path_2{argv[2]};
+    // Point origin{0, 0};
+    // Point middle{500, 500};
+    // Texture atlas{origin, 389, 1024};
+    // // atlas.addChild(std::make_unique<PngImage>(argv[1], origin));
+    // // atlas.addChild(std::make_unique<PngImage>(argv[2], middle));
+
+    // for (int i = 1; i < argc; i++) {
+    //     // dlib::array2d<dlib::rgb_alpha_pixel> _img;
+    //     // dlib::load_png(_img, argv[i]);
+    //     // dlib::image_window _win;
+    //     // _win.set_background_color(255, 255, 255);
+    //     // _win.set_image(_img);
+    //     bool is_success = atlas.addChild(std::make_unique<PngImage>(argv[i], origin));
+    // }
+
+    // atlas.save("final.png");
+    // atlas.print_info();
+
+    // dlib::array2d<dlib::rgb_alpha_pixel> img;
+    // dlib::load_png(img, "final.png");
     // dlib::image_window win;
-    // dlib::array2d<dlib::rgb_alpha_pixel> img_1;
-    // dlib::array2d<dlib::rgb_alpha_pixel> img_2;
-    // dlib::load_png(img_1, img_path_1);
-    // dlib::load_png(img_2, img_path_2);
-
-    // dlib::array2d<dlib::rgb_alpha_pixel> img(img_1.nr() + img_2.nr(), std::max(img_1.nc(), img_2.nc()));
-    // for (long row = 0; row < img.nr(); row++) {
-    //     for (long col = 0; col < img.nc(); col++)
-    //         img[row][col] = dlib::rgb_alpha_pixel(255, 255, 255, 0);
-    // }
-
-    // for (long row = 0; row < img_1.nr(); row++) {
-    //     for (long col = 0; col < std::min(img_1.nc(), img.nc()); col++) {
-    //         img[row][col] = img_1[row][col];
-    //     }
-    // }
-    // long img_1_row = img_1.nr();
-    // for (long row = 0; row < img_2.nr(); row++) {
-    //     for (long col = 0; col < std::min(img_2.nc(), img.nc()); col++) {
-    //         img[row + img_1_row][col] = img_2[row][col];
-    //     }
-    // }
-
     // win.set_background_color(255, 255, 255);
     // win.set_image(img);
     // std::cin.get();
-    // dlib::array2d<dlib::rgb_alpha_pixel> img_1;
-    // dlib::load_png(img_1, argv[1]);
-    // dlib::save_jpeg(img_1, "img.jpeg");
-    // dlib::save_png(img_1, "img.png");
 
-    Point p{0,0};
-    PngImage img{argv[1], p};
-    img.save("img.png");
+    std::string folder_path = "file_loader";
+    std::string jpeg_1 = folder_path + "/img_1.jpeg";
+    std::string png_1 = folder_path + "/img_2.png";
+    std::string other = folder_path + "/other.txt";
+    fs::create_directories(folder_path);
+    std::ofstream _jpeg_1(jpeg_1);
+    std::ofstream _png_1(png_1);
+    std::ofstream _other(other);
+
+    FileLoader img_dir(folder_path);
+    while (img_dir.next())
+        std::cout << img_dir.get() << std::endl;
 
     return 0;
 } catch (std::exception &e) {

@@ -1,14 +1,19 @@
 #include "catch2/catch.hpp"
 
+#include <filesystem>
 #include <exception>
 #include <dlib/image_io.h>
+
 #include "png_image.h"
 
+namespace fs = std::filesystem;
+
 TEST_CASE("PngImage functionalities", "[png_image]") {
+    fs::create_directories("test_image");
     dlib::array2d<dlib::rgb_alpha_pixel> img_1(101, 101);
     dlib::array2d<dlib::rgb_alpha_pixel> img_2(101, 101);
-    std::string path_1{"png_image_test_img_1.png"};
-    std::string path_2{"png_image_test_img_2.png"};
+    std::string path_1{"test_image/png_image_test_img_1.png"};
+    std::string path_2{"test_image/png_image_test_img_2.png"};
     for (long row = 0; row < img_1.nr(); row++) {
         for (long col = 0; col < img_1.nc(); col++)
             img_1[row][col] = dlib::rgb_alpha_pixel(255, 0, 0, 1);

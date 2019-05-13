@@ -1,11 +1,15 @@
 #include "catch2/catch.hpp"
 
 #include <exception>
+#include <filesystem>
 #include <string>
 #include <utility>
 #include <dlib/image_io.h>
+
 #include "texture.h"
 #include "png_image.h"
+
+namespace fs = std::filesystem;
 
 void make_png(dlib::array2d<dlib::rgb_alpha_pixel>& img, const std::string& path) {
     auto int_generator = Catch::Generators::RandomIntegerGenerator(0, 255);
@@ -23,6 +27,8 @@ void make_png(dlib::array2d<dlib::rgb_alpha_pixel>& img, const std::string& path
 }
 
 TEST_CASE("Texture functionalities", "[texture]") {
+    fs::create_directories("test_image");
+
     Point origin{0, 0};
     long width = 1000;
     long height = 1000;
@@ -55,9 +61,9 @@ TEST_CASE("Texture functionalities", "[texture]") {
 
     SECTION("Texture manipulation") {
         dlib::array2d<dlib::rgb_alpha_pixel> small_png_raw(101, 101);
-        std::string small_png_path{"texture_test_small.png"};
+        std::string small_png_path{"test_image/texture_test_small.png"};
         dlib::array2d<dlib::rgb_alpha_pixel> large_png_raw(1001, 1001);
-        std::string large_png_path{"texture_test_large.png"};
+        std::string large_png_path{"test_image/texture_test_large.png"};
         make_png(small_png_raw, small_png_path);
         make_png(large_png_raw, large_png_path);
         Point png_origin{0, 0};
@@ -78,7 +84,7 @@ TEST_CASE("Texture functionalities", "[texture]") {
             
             REQUIRE(atlas.get_textures_size() == 3);
 
-            std::string out_path{"texture_test_generated.png"};
+            std::string out_path{"test_image/texture_test_generated.png"};
             atlas.save(out_path);
 
             dlib::array2d<dlib::rgb_alpha_pixel> generated_png_raw;
