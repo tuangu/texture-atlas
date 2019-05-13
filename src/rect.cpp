@@ -5,16 +5,12 @@
 #include "rect.h"
 
 Rect::Rect(long x, long y, long w, long h, const std::string& name):
-    name{name},
-    pOrigin(Point{x, y}),
-    pExtent(Point{x+w, y+h}) {
+    name{name}, pOrigin(Point{x, y}), pExtent(Point{x+w, y+h}) {
 
 }
 
 Rect::Rect(const Point& origin, const Point& extent, const std::string& name):
-    name{name},
-    pOrigin{origin},
-    pExtent{extent} {
+    name{name}, pOrigin{origin}, pExtent{extent} {
 
 }
 

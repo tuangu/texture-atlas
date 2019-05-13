@@ -28,9 +28,9 @@ public:
 
     virtual void save(const std::string&) = 0;
 
-    virtual bool isEnoughSpace(long) = 0;
+    virtual bool addChild(std::shared_ptr<Image>) = 0;
 
-    virtual bool addChild(std::unique_ptr<Image>) = 0;
+    virtual void setParent(std::shared_ptr<Image>) = 0;
 
 protected:
     Image(const std::string& path = "") : path{path} {};

@@ -20,21 +20,18 @@ public:
 
     void save(const std::string& destPath) override;
 
-    bool isEnoughSpace(long area) override;
+    bool addChild(std::shared_ptr<Image> child) override;
 
-    bool addChild(std::unique_ptr<Image> child) override;
+    void setParent(std::shared_ptr<Image> parent) override;
 
-    std::size_t get_textures_size() {
-        return textures.size();
-    };
+    void print_info(int level);
 
 private:
     point_type origin;
     long width;
     long height;
-    long freeArea;
-    meta_type meta;
-    std::vector<std::unique_ptr<Image>> textures;
+    std::vector<std::shared_ptr<Image>> textures;
+    std::weak_ptr<Image> parent;
 };
 
 #endif /* define __TEXTURE_H__ */

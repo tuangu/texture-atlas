@@ -4,16 +4,9 @@
 
 #include "point.h"
 
-Point::Point(long x, long y):
-    x{x}, y{y} {
+Point::Point(long x, long y) : x{x}, y{y} {}
 
-}
-
-Point::Point(const Point& other):
-    x{other.X()},
-    y{other.Y()} {
-
-}
+Point::Point(const Point& other) : x{other.X()}, y{other.Y()} {}
 
 Point& Point::operator=(const Point& other) {
     if (this != &other) {
@@ -24,21 +17,13 @@ Point& Point::operator=(const Point& other) {
     return *this;
 }
 
-long Point::X() const {
-    return x;
-}
+long Point::X() const { return x; }
 
-void Point::X(long x) {
-    this->x = x;
-}
+void Point::X(long x) { this->x = x; }
 
-long Point::Y() const {
-    return y;
-}
+long Point::Y() const { return y; }
 
-void Point::Y(long y) {
-    this->y = y;
-}
+void Point::Y(long y) { this->y = y; }
 
 Point& Point::operator+=(const Point& other) {
     x += other.x;
@@ -64,9 +49,7 @@ bool operator==(const Point& lhs, const Point& rhs) {
     return (lhs.x == rhs.x) && (lhs.y == rhs.y);
 }
 
-bool operator!=(const Point& lhs, const Point& rhs) {
-    return !(lhs == rhs);
-}
+bool operator!=(const Point& lhs, const Point& rhs) { return !(lhs == rhs); }
 
 std::ostream& operator<<(std::ostream& os, const Point& point) {
     os << "(" << point.x << "," << point.y << ")";

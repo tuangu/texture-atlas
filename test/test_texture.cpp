@@ -34,8 +34,6 @@ TEST_CASE("Texture functionalities", "[texture]") {
     long height = 1000;
     Texture atlas{origin, width, height};
 
-    REQUIRE(atlas.get_textures_size() == 0);
-
     SECTION("Texture has correct metadata") {
         auto meta =  atlas.metadata();
 
@@ -67,22 +65,12 @@ TEST_CASE("Texture functionalities", "[texture]") {
         make_png(small_png_raw, small_png_path);
         make_png(large_png_raw, large_png_path);
         Point png_origin{0, 0};
-        auto small_png = std::make_unique<PngImage>(small_png_path, png_origin);
-        auto large_png = std::make_unique<PngImage>(large_png_path, png_origin);
-
-        SECTION("Other image can check if it fits into the texture") {
-            REQUIRE(atlas.isEnoughSpace(small_png->metadata().area()) == true);
-            REQUIRE(atlas.isEnoughSpace(large_png->metadata().area()) == false);
-        }
+        auto small_png = std::make_shared<PngImage>(small_png_path, png_origin);
+        auto large_png = std::make_shared<PngImage>(large_png_path, png_origin);
 
         SECTION("Texture can insert children if it has enough space") {
-            REQUIRE(atlas.addChild(std::move(small_png)) == true);
-            REQUIRE(atlas.addChild(std::move(large_png)) == false);
-
-            REQUIRE(small_png == nullptr);
-            REQUIRE(large_png == nullptr);
-            
-            REQUIRE(atlas.get_textures_size() == 3);
+            REQUIRE(atlas.addChild(small_png) == true);
+            REQUIRE(atlas.addChild(large_png) == false);
 
             std::string out_path{"test_image/texture_test_generated.png"};
             atlas.save(out_path);

@@ -1,15 +1,15 @@
-/** \file png_image.h
- *  \brief Png image header
+/** \file jpeg_image.h
+ *  \brief Jpeg image header
  */
 
-#ifndef __PNG_IMAGE_H__
-#define __PNG_IMAGE_H__
+#ifndef __JPEG_IMAGE_H__
+#define __JPEG_IMAGE_H__
 
 #include "image.h"
 
-class PngImage : public Image {
+class JpegImage : public Image {
 public:
-    PngImage(const std::string& path, point_type& origin);
+    JpegImage(const std::string& path, point_type& origin);
 
     meta_type metadata() override;
     
@@ -30,4 +30,4 @@ private:
     std::weak_ptr<Image> parent;
 };
 
-#endif /* define __PNG_IMAGE_H__ */
+#endif /* define __JPEG_IMAGE_H__ */

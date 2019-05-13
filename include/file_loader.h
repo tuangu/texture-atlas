@@ -24,7 +24,7 @@ public:
 private:
     void load();
 
-    bool filter(fs::path path);
+    bool filter(const fs::path& path) const;
 
 private:
     std::string folderPath;

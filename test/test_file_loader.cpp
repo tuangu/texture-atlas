@@ -10,13 +10,13 @@ namespace fs = std::filesystem;
 
 TEST_CASE("FileLoader functionalities", "[file_loader]") {
     std::string folder_path = "test_file_loader";
-    std::string jpeg_1 = "img_1.jpeg";
-    std::string png_1 = "img_2.png";
-    std::string other = "other.txt";
+    std::string jpeg_1 = folder_path + "/" + "img_1.jpeg";
+    std::string png_1 = folder_path + "/" + "img_2.png";
+    std::string other = folder_path + "/" + "other.txt";
     fs::create_directories(folder_path);
-    std::ofstream _jpeg_1(folder_path + "/" + jpeg_1);
-    std::ofstream _png_1(folder_path + "/" + png_1);
-    std::ofstream _other(folder_path + "/" + other);
+    std::ofstream _jpeg_1(jpeg_1);
+    std::ofstream _png_1(png_1);
+    std::ofstream _other(other);
 
     FileLoader img_dir(folder_path);
 

@@ -2,19 +2,17 @@
  *  \brief File loader implementation
  */
 
-#include <filesystem>
 #include "file_loader.h"
+#include <filesystem>
 
 namespace fs = std::filesystem;
 
-FileLoader::FileLoader(const std::string& folderPath):
-    folderPath{folderPath},
-    isLoaded(false),
-    imagePaths{},
-    iterator{},
-    currentFilePath{} {
-
-}
+FileLoader::FileLoader(const std::string& folderPath)
+    : folderPath{folderPath},
+      isLoaded(false),
+      imagePaths{},
+      iterator{},
+      currentFilePath{} {}
 
 void FileLoader::reset(const std::string& newPath) {
     folderPath = newPath;
@@ -23,21 +21,18 @@ void FileLoader::reset(const std::string& newPath) {
 }
 
 bool FileLoader::next() {
-    if (!isLoaded)
-        load();
+    if (!isLoaded) load();
 
     if (iterator != imagePaths.cend()) {
         currentFilePath = *iterator;
         ++iterator;
         return true;
     }
-    
+
     return false;
 }
 
-std::string const& FileLoader::get() const {
-    return currentFilePath;
-}
+std::string const& FileLoader::get() const { return currentFilePath; }
 
 void FileLoader::load() {
     fs::path path(folderPath);
@@ -46,22 +41,22 @@ void FileLoader::load() {
         for (const auto& entry : fs::directory_iterator(path)) {
             auto filename = entry.path().filename();
             if (filter(filename)) {
-                imagePaths.push_back(filename.string());
+                auto fullPath = path/filename;
+                imagePaths.push_back(fullPath);
             }
         }
-        
+
         isLoaded = true;
         iterator = imagePaths.cbegin();
     }
 }
 
-bool FileLoader::filter(fs::path path) {
-    fs::path JPEG(".jpeg");
-    fs::path PNG(".png");
+bool FileLoader::filter(const fs::path& path) const {
+    const fs::path JPEG(".jpeg");
+    const fs::path PNG(".png");
 
     auto ext = path.extension();
-    if (ext == JPEG || ext == PNG)
-        return true;
-    
+    if (ext == JPEG || ext == PNG) return true;
+
     return false;
 }

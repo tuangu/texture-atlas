@@ -1,60 +1,72 @@
 #include <cstddef>
+#include <cmath>
 #include <exception>
-#include <string>
 #include <iostream>
-#include <iterator>
-#include <filesystem>
-#include <algorithm>
+#include <string>
+#include <vector>
 
 #include <dlib/gui_widgets.h>
 #include <dlib/image_io.h>
+
+#include "file_loader.h"
 #include "png_image.h"
 #include "texture.h"
-#include "file_loader.h"
-
-namespace fs = std::filesystem;
 
 int main(int argc, char* argv[]) try {
-    // if (argc < 2) 
-    //     throw std::invalid_argument("error: missing image paths");
+    if (argc != 2) {
+        throw std::invalid_argument("error: missing image folder paths");
+    }
+    
+    FileLoader imageDir(argv[1]);
+    Point origin;
+    std::vector<std::string> paths;
 
-    // Point origin{0, 0};
-    // Point middle{500, 500};
-    // Texture atlas{origin, 389, 1024};
-    // // atlas.addChild(std::make_unique<PngImage>(argv[1], origin));
-    // // atlas.addChild(std::make_unique<PngImage>(argv[2], middle));
+    while (imageDir.next()) {
+        paths.push_back(imageDir.get());
+    }
 
-    // for (int i = 1; i < argc; i++) {
-    //     // dlib::array2d<dlib::rgb_alpha_pixel> _img;
-    //     // dlib::load_png(_img, argv[i]);
-    //     // dlib::image_window _win;
-    //     // _win.set_background_color(255, 255, 255);
-    //     // _win.set_image(_img);
-    //     bool is_success = atlas.addChild(std::make_unique<PngImage>(argv[i], origin));
-    // }
+    long dim = 4096;
+    long distance = 32;
+    bool isDone = false;
+    while (!isDone) {
+        Texture texture{origin, dim, dim};
+        for (const auto& path : paths) {
+            if (!texture.addChild(std::make_shared<PngImage>(path, origin))) {
+                isDone = true;
+                break;
+            }
+        }
+        if (!isDone)
+            dim = dim / 2;
+    }
 
-    // atlas.save("final.png");
-    // atlas.print_info();
+    long exactDim = dim * 2;
+    isDone = false;
+    for (; !isDone; exactDim -= distance) {
+        Texture texture{origin, exactDim, exactDim};
+        for (const auto& path : paths) {
+            if (!texture.addChild(std::make_shared<PngImage>(path, origin))) {
+                isDone = true;
+                break;
+            }
+        }
+    }
+    
+    exactDim += distance;
+    std::cout << "Exact dim = " << exactDim << std::endl;
+    Texture texture{origin, exactDim, exactDim};
+    for (const auto& path : paths) {
+        texture.addChild(std::make_shared<PngImage>(path, origin));
+    }
 
-    // dlib::array2d<dlib::rgb_alpha_pixel> img;
-    // dlib::load_png(img, "final.png");
+    //texture.print_info(0);
+    texture.save("final.png");
+
+    // dlib::array2d<dlib::rgb_alpha_pixel> arr;
+    // dlib::load_png(arr, "final.png");
     // dlib::image_window win;
-    // win.set_background_color(255, 255, 255);
-    // win.set_image(img);
+    // win.set_image(arr);
     // std::cin.get();
-
-    std::string folder_path = "file_loader";
-    std::string jpeg_1 = folder_path + "/img_1.jpeg";
-    std::string png_1 = folder_path + "/img_2.png";
-    std::string other = folder_path + "/other.txt";
-    fs::create_directories(folder_path);
-    std::ofstream _jpeg_1(jpeg_1);
-    std::ofstream _png_1(png_1);
-    std::ofstream _other(other);
-
-    FileLoader img_dir(folder_path);
-    while (img_dir.next())
-        std::cout << img_dir.get() << std::endl;
 
     return 0;
 } catch (std::exception &e) {

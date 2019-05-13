@@ -85,10 +85,6 @@ TEST_CASE("PngImage functionalities", "[png_image]") {
         REQUIRE(is_all_pixel_equal);
     }
 
-    SECTION("PngImage is always full") {
-        REQUIRE(png_img_1.isEnoughSpace(100) == false);
-    }
-
     SECTION("PngImage can not add children") {
         REQUIRE(png_img_1.addChild(nullptr) == false);
     }
