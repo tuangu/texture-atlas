@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <utility>
 #include <filesystem>
 
 namespace fs = std::filesystem;
@@ -19,7 +20,7 @@ public:
 
     bool next();
 
-    std::string const& get() const;
+    const std::pair<std::string, std::string>& get() const;
 
 private:
     void load();
@@ -29,9 +30,9 @@ private:
 private:
     std::string folderPath;
     bool isLoaded;
-    std::vector<std::string> imagePaths;
-    std::vector<std::string>::const_iterator iterator;
-    std::string currentFilePath;
+    std::vector<std::pair<std::string, std::string>> imagePaths;
+    std::vector<std::pair<std::string, std::string>>::const_iterator iterator;
+    std::pair<std::string, std::string> currentFilePath;
 };
 
 #endif /* define __FILE_LOADER_H__ */

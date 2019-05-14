@@ -11,6 +11,7 @@
 #include "file_loader.h"
 #include "report.h"
 #include "png_image.h"
+#include "jpeg_image.h"
 #include "texture.h"
 
 int main(int argc, char* argv[]) try {
@@ -21,9 +22,11 @@ int main(int argc, char* argv[]) try {
     FileLoader imageDir(argv[1]);
     Report reporter;
     Point origin;
-    std::vector<std::string> paths;
+    std::vector<std::pair<std::string, std::string>> paths;
 
     while (imageDir.next()) {
+        // auto [fullpath, ext] = imageDir.get();
+        // auto path = imageDir.get();
         paths.push_back(imageDir.get());
     }
 
@@ -33,7 +36,18 @@ int main(int argc, char* argv[]) try {
     while (!isDone) {
         Texture texture{origin, dim, dim};
         for (const auto& path : paths) {
-            if (!texture.addChild(std::make_shared<PngImage>(path, origin))) {
+            auto [fullpath, ext] = path;
+            if (ext == ".png") {
+                if (!texture.addChild(std::make_shared<PngImage>(fullpath, origin))) {
+                    isDone = true;
+                    break;
+                }
+            } else if (ext == ".jpeg") {
+                if (!texture.addChild(std::make_shared<JpegImage>(fullpath, origin))) {
+                    isDone = true;
+                    break;
+                }
+            } else {
                 isDone = true;
                 break;
             }
@@ -47,7 +61,18 @@ int main(int argc, char* argv[]) try {
     for (; !isDone; exactDim -= distance) {
         Texture texture{origin, exactDim, exactDim};
         for (const auto& path : paths) {
-            if (!texture.addChild(std::make_shared<PngImage>(path, origin))) {
+            auto [fullpath, ext] = path;
+            if (ext == ".png") {
+                if (!texture.addChild(std::make_shared<PngImage>(fullpath, origin))) {
+                    isDone = true;
+                    break;
+                }
+            } else if (ext == ".jpeg") {
+                if (!texture.addChild(std::make_shared<JpegImage>(fullpath, origin))) {
+                    isDone = true;
+                    break;
+                }
+            } else {
                 isDone = true;
                 break;
             }
@@ -57,7 +82,12 @@ int main(int argc, char* argv[]) try {
     exactDim += distance;
     Texture texture{origin, exactDim, exactDim};
     for (const auto& path : paths) {
-        texture.addChild(std::make_shared<PngImage>(path, origin));
+        auto [fullpath, ext] = path;
+        if (ext == ".png") {
+            texture.addChild(std::make_shared<PngImage>(fullpath, origin));
+        } else if (ext == ".jpeg") {
+            texture.addChild(std::make_shared<JpegImage>(fullpath, origin));
+        }
     }
 
     
@@ -66,11 +96,11 @@ int main(int argc, char* argv[]) try {
 
     texture.save("final.png");
 
-    // dlib::array2d<dlib::rgb_alpha_pixel> arr;
-    // dlib::load_png(arr, "final.png");
-    // dlib::image_window win;
-    // win.set_image(arr);
-    // std::cin.get();
+    dlib::array2d<dlib::rgb_alpha_pixel> arr;
+    dlib::load_png(arr, "final.png");
+    dlib::image_window win;
+    win.set_image(arr);
+    std::cin.get();
 
     return 0;
 } catch (std::exception &e) {

@@ -32,7 +32,9 @@ bool FileLoader::next() {
     return false;
 }
 
-std::string const& FileLoader::get() const { return currentFilePath; }
+const std::pair<std::string, std::string>& FileLoader::get() const { 
+    return currentFilePath; 
+}
 
 void FileLoader::load() {
     fs::path path(folderPath);
@@ -42,7 +44,10 @@ void FileLoader::load() {
             auto filename = entry.path().filename();
             if (filter(filename)) {
                 auto fullPath = path/filename;
-                imagePaths.push_back(fullPath);
+                auto ext = filename.extension();
+                imagePaths.push_back(std::make_pair<std::string, std::string>(
+                    fullPath, ext
+                ));
             }
         }
 
@@ -56,7 +61,8 @@ bool FileLoader::filter(const fs::path& path) const {
     const fs::path PNG(".png");
 
     auto ext = path.extension();
-    if (ext == JPEG || ext == PNG) return true;
+    if (ext == JPEG || ext == PNG) 
+        return true;
 
     return false;
 }
