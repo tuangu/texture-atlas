@@ -19,7 +19,7 @@ void make_png(dlib::array2d<dlib::rgb_alpha_pixel>& img, const std::string& path
             img[row][col] = dlib::rgb_alpha_pixel(int_generator.get(), 
                                                   int_generator.get(),
                                                   int_generator.get(),
-                                                  1);
+                                                  255);
         }
     }
 

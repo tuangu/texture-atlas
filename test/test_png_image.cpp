@@ -16,12 +16,12 @@ TEST_CASE("PngImage functionalities", "[png_image]") {
     std::string path_2{"test_image/png_image_test_img_2.png"};
     for (long row = 0; row < img_1.nr(); row++) {
         for (long col = 0; col < img_1.nc(); col++)
-            img_1[row][col] = dlib::rgb_alpha_pixel(255, 0, 0, 1);
+            img_1[row][col] = dlib::rgb_alpha_pixel(255, 0, 0, 255);
     }
     dlib::save_png(img_1, path_1);
     for (long row = 0; row < img_2.nr(); row++) {
         for (long col = 0; col < img_2.nc(); col++)
-            img_2[row][col] = dlib::rgb_alpha_pixel(0, 255, 0, 0.5);
+            img_2[row][col] = dlib::rgb_alpha_pixel(0, 255, 0, 120);
     }
     dlib::save_png(img_2, path_2);
 
@@ -73,7 +73,7 @@ TEST_CASE("PngImage functionalities", "[png_image]") {
                 if ((png_1[row][col].blue != 0)
                     || (png_1[row][col].red != 255)
                     || (png_1[row][col].green != 0)
-                    || (png_1[row][col].alpha != 1)) {
+                    || (png_1[row][col].alpha != 255)) {
                     is_all_pixel_equal = false;
                     break;
                 }

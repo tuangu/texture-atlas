@@ -21,7 +21,7 @@ TEST_CASE("FileLoader functionalities", "[file_loader]") {
     FileLoader img_dir(folder_path);
 
     SECTION("FileLoader can return filtered filepaths") {
-        std::vector<std::string> paths{};
+        std::vector<std::pair<std::string, std::string>> paths;
         while (img_dir.next()) {
             paths.push_back(img_dir.get());
         }
@@ -30,7 +30,8 @@ TEST_CASE("FileLoader functionalities", "[file_loader]") {
         
         bool hasExpectedPaths = true;
         for (const auto& path : paths) {
-            if (path != jpeg_1 && path != png_1)
+            auto [fullpath, ext] = path;
+            if (fullpath != jpeg_1 && fullpath != png_1)
                 hasExpectedPaths = false;
         }
         REQUIRE(hasExpectedPaths);
