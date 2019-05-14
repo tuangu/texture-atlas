@@ -58,10 +58,11 @@ void FileLoader::load() {
 
 bool FileLoader::filter(const fs::path& path) const {
     const fs::path JPEG(".jpeg");
+    const fs::path JPG(".jpg");
     const fs::path PNG(".png");
 
     auto ext = path.extension();
-    if (ext == JPEG || ext == PNG) 
+    if (ext == JPEG || ext == PNG || ext == JPG) 
         return true;
 
     return false;

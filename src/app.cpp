@@ -26,7 +26,7 @@ App::App(Report& reporter, const std::string& folderPath,
 void App::run() {
     loadImage();
     long imageSize = findOptimalSize();
-    if (imageSize < 0)
+    if (imageSize <= 0)
         throw std::runtime_error("error: image size should be positive");
 
     Point zero{};
@@ -59,6 +59,10 @@ bool App::addChild(Image* texture) {
             if (!texture->addChild(std::make_shared<JpegImage>(fullpath, origin))) {
                 return false;
             }
+        } else if (ext == ".jpg") {
+            if (!texture->addChild(std::make_shared<JpegImage>(fullpath, origin))) {
+                return false;
+            }
         }
     }
 
@@ -70,12 +74,12 @@ long App::findOptimalSize(long distance) {
         return -1;
 
     long imageSize = getMaxDimension();
-    if (imageSize < 0)
+    if (imageSize <= 0)
         return -1;
 
     Point origin{};
     bool isDone = false;
-    while (!isDone) {
+    while (!isDone || imageSize == 0) {
         Texture texture{origin, imageSize, imageSize};
         if (addChild(&texture)) {
             imageSize = imageSize / 2;
@@ -114,7 +118,12 @@ long App::getMaxDimension() {
             JpegImage jpegImg(fullpath, zero);
             totalWidth += jpegImg.metadata().width();
             totalHeight += jpegImg.metadata().height();
-        }
+		}
+		else if (ext == ".jpg") {
+			JpegImage jpegImg(fullpath, zero);
+			totalWidth += jpegImg.metadata().width();
+			totalHeight += jpegImg.metadata().height();
+		}
     }
 
     return totalWidth + totalHeight;
