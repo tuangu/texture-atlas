@@ -36,5 +36,5 @@ void Report::toFile(const std::string& filename) {
 std::string Report::shortenPath(std::string filename) {
     fs::path path{filename};
 
-    return path.filename();
+    return path.filename().string();
 }

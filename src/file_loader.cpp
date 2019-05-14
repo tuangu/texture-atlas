@@ -46,7 +46,7 @@ void FileLoader::load() {
                 auto fullPath = path/filename;
                 auto ext = filename.extension();
                 imagePaths.push_back(std::make_pair<std::string, std::string>(
-                    fullPath, ext
+                    fullPath.string(), ext.string()
                 ));
             }
         }
