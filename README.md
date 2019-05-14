@@ -20,9 +20,11 @@ Make sure you are using Visual Studio 15 2017 or newer for filesystem support. A
 mkdir build-msvc
 cd build-msvc
 ```
-* Generate projects to target **x64**
+* Generate projects to target **x64** or **x86**
 ```
 cmake -G "Visual Studio 15 2017 Win64" .. 
+or 
+cmake -G "Visual Studio 15 2017" .. 
 ```
 
 * Navigate to the project folder to open the solution file ({project_name}.sln).
