@@ -23,7 +23,8 @@ add_subdirectory(dlib dlib_build)
 add_subdirectory(Catch2)
 
 # Build the library
-add_library(${PROJECT_NAME} src/file_loader.cpp
+add_library(${PROJECT_NAME} src/app.cpp
+                            src/file_loader.cpp
                             src/png_image.cpp
                             src/jpeg_image.cpp
                             src/point.cpp
